@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="theme.css" />
+    <script src="browser-polyfill.min.js"></script>
+    <script src="theme.js"></script>
+    <style>
+      body {
+        width: 320px;
+        max-height: 480px;
+        overflow-y: auto;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border);
+      }
+      header h1 {
+        font-size: 14px;
+        margin: 0;
+      }
+      button.icon-btn {
+        border: none;
+        background: transparent;
+        color: var(--hint);
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+        padding: 4px;
+        border-radius: 4px;
+      }
+      button.icon-btn:hover {
+        background: var(--hover-bg);
+        color: var(--text);
+      }
+      .account {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border);
+      }
+      .account:last-child {
+        border-bottom: none;
+      }
+      .account h2 {
+        font-size: 12px;
+        font-weight: 600;
+        margin: 0 0 6px;
+        color: var(--hint);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor: pointer;
+        border-radius: 4px;
+        padding: 2px 4px;
+        margin-left: -4px;
+        margin-right: -4px;
+        width: fit-content;
+      }
+      .account h2:hover {
+        background: var(--hover-bg);
+        color: var(--text);
+        text-decoration: underline;
+      }
+      .account ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .account li a {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        padding: 6px 6px;
+        margin: 0 -6px;
+        border-radius: 4px;
+        text-decoration: none;
+        color: var(--text);
+      }
+      .account li a:hover {
+        background: var(--hover-bg);
+      }
+      .from {
+        font-weight: 600;
+        font-size: 12.5px;
+      }
+      .subject {
+        font-size: 12px;
+        color: var(--hint);
+      }
+      p.empty-hint {
+        margin: 4px 0 0;
+        color: var(--hint);
+        font-size: 12px;
+      }
+      #empty {
+        padding: 24px 14px;
+        text-align: center;
+        color: var(--hint);
+        font-size: 12.5px;
+        line-height: 1.5;
+      }
+      a.support-link {
+        display: block;
+        text-align: center;
+        padding: 10px 14px;
+        color: var(--link);
+        font-size: 12px;
+        text-decoration: none;
+        border-top: 1px solid var(--border);
+      }
+      a.support-link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1 data-i18n="popupTitle"></h1>
+      <button id="settings-btn" class="icon-btn" title="Settings" data-i18n-title="popupSettings">⚙</button>
+    </header>
+    <div id="accounts"></div>
+    <div id="empty" hidden></div>
+    <a
+      class="support-link"
+      data-i18n="supportLink"
+      href="https://buymeacoffee.com/vinzenz.san"
+      target="_blank"
+      rel="noopener noreferrer"
+    ></a>
+    <script src="popup.js"></script>
+  </body>
+</html>

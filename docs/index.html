@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gmail Notification</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Gmail Notification is a free browser extension for Firefox and Chrome that watches one or more logged-in Google accounts and notifies you when new mail arrives, without keeping a Gmail tab open.">
+<meta property="og:title" content="Gmail Notification">
+<meta property="og:description" content="Watch one or more logged-in Google accounts and get notified when new mail arrives — popup preview, sound, and toolbar badge, without keeping a Gmail tab open.">
+<meta property="og:url" content="https://vinzenz-dev.de/gmail_notification/">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="hero-row">
+        <img class="hero-logo" src="./icons/logo.png" alt="Gmail Notification logo">
+        <h1 class="hero-word">Gmail Notification</h1>
+      </div>
+      <p class="tagline">A free browser extension for Firefox and Chrome that watches one or more logged-in Google accounts and notifies you when new mail arrives — without keeping a Gmail tab open.</p>
+      <div class="store-row">
+        <a class="store-btn store-btn-try" href="https://github.com/vinzenz-san/gmail_notification">
+          <svg class="store-btn-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span class="store-btn-text"><small>Not yet on the stores</small>Get it on GitHub</span>
+        </a>
+      </div>
+    </header>
+
+    <section>
+      <h2>What it does</h2>
+      <p style="color: var(--text-muted); margin-top: -4px;">Gmail Notification reads the unread-mail count and subject/sender for every Google account you're already logged into in your browser, checks every 2 minutes, and tells you when something new shows up — with a popup preview, a sound, and/or a toolbar badge.</p>
+      <div class="features">
+        <div class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="4"/><circle cx="17" cy="15" r="4"/><path d="M11 8h6M4 15h6"/></svg>
+          <h3>Multiple Gmail accounts at once</h3>
+          <p>Detects every currently logged-in Google account and lets you pick which ones to watch — reorder them anytime, the order persists.</p>
+        </div>
+        <div class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          <h3>Popup preview, no Gmail tab needed</h3>
+          <p>Click the toolbar icon to see the latest unread mail per account — sender and subject — and open one directly. Click an account's name to open its inbox even with nothing unread.</p>
+        </div>
+        <div class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/><circle cx="12" cy="12" r="3.5"/></svg>
+          <h3>Notification, sound, and badge — each optional</h3>
+          <p>Toggle a popup notification, a short sound, and an unread-count badge on the toolbar icon independently. One background check for the whole browser, so multiple open windows never trigger duplicate sounds.</p>
+        </div>
+        <div class="feature">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <h3>Private, no OAuth, open source</h3>
+          <p>No sign-in, no Google Cloud project, no password ever entered or seen. It reads Gmail's own per-account unread-mail feed using your browser's existing session — nothing leaves your device. Free and open source under the MIT license.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h3>Get it</h3>
+          <ul>
+            <li><a href="https://github.com/vinzenz-san/gmail_notification">GitHub (install instructions)</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Project</h3>
+          <ul>
+            <li><a href="https://github.com/vinzenz-san/gmail_notification">Source code</a></li>
+            <li><a href="https://github.com/vinzenz-san/gmail_notification/issues">Report an Issue</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>More</h3>
+          <ul>
+            <li><a href="./privacy.html">Privacy Policy</a></li>
+            <li><a href="https://buymeacoffee.com/vinzenz.san">Buy me a coffee</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="footer-legal">Gmail Notification is open source and licensed under <a href="https://github.com/vinzenz-san/gmail_notification/blob/main/LICENSE">MIT</a>. Not affiliated with or endorsed by Google. &copy; 2026 Vinzenz.</p>
+    </footer>
+  </div>
+</body>
+</html>

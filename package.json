@@ -1,0 +1,19 @@
+{
+  "name": "gmail-notification",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  },
+  "scripts": {
+    "release": "node scripts/release.mjs",
+    "dev:chrome": "node scripts/dev-unpacked.mjs chrome",
+    "dev:firefox": "node scripts/dev-unpacked.mjs firefox"
+  },
+  "devDependencies": {
+    "archiver": "^7.0.1",
+    "webextension-polyfill": "^0.12.0"
+  }
+}

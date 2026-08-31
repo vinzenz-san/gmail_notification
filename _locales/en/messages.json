@@ -1,0 +1,31 @@
+{
+  "extName": { "message": "Gmail Notification" },
+  "extDescription": { "message": "Get a notification and/or sound when new mail arrives in your logged-in Gmail accounts." },
+
+  "popupTitle": { "message": "Gmail Notification" },
+  "popupSettings": { "message": "Settings" },
+  "popupNoAccounts": { "message": "No accounts selected yet. Open settings to choose which logged-in Google accounts to watch." },
+  "popupNoUnread": { "message": "No unread mail." },
+  "popupOpenInbox": { "message": "Open inbox" },
+  "supportLink": { "message": "☕ Support this project" },
+
+  "optionsTitle": { "message": "Gmail Notification — Settings" },
+  "optionsAccountsHeading": { "message": "Accounts" },
+  "optionsDetectAccounts": { "message": "Detect accounts" },
+  "optionsDetecting": { "message": "Looking for logged-in Google accounts…" },
+  "optionsDetectedCount": { "message": "Found $1 logged-in account(s).", "placeholders": { "1": { "content": "$1" } } },
+  "optionsDetectedNone": { "message": "No logged-in Google account found. Make sure you're signed in to Gmail in this browser." },
+  "optionsDetectError": { "message": "Could not check for accounts. Try again." },
+  "optionsMoveUp": { "message": "Move up" },
+  "optionsMoveDown": { "message": "Move down" },
+  "optionsNotificationsHeading": { "message": "Notifications" },
+  "optionsToggleNotifications": { "message": "Show a popup notification for new mail" },
+  "optionsToggleSound": { "message": "Play a sound for new mail" },
+  "optionsToggleBadge": { "message": "Show unread count on the toolbar icon" },
+  "optionsAppearanceHeading": { "message": "Appearance" },
+  "optionsThemeLabel": { "message": "Theme" },
+  "optionsThemeSystem": { "message": "System" },
+  "optionsThemeLight": { "message": "Light" },
+  "optionsThemeDark": { "message": "Dark" },
+  "optionsFooterHint": { "message": "Checked out every 2 minutes. Uses your browser's existing Gmail login — no separate sign-in or password needed." }
+}
