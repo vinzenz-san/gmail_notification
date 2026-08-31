@@ -38,7 +38,7 @@ This is an independent, unofficial project — not affiliated with or endorsed b
 
 ## Category
 
-Productivity (Chrome) — Other/Productivity (Firefox AMO)
+Productivity (Chrome) — **Alerts & Updates** / "Hinweise und Benachrichtigungen" (Firefox AMO; single best fit, no need to fill all 3 slots)
 
 ## License
 
