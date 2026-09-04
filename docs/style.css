@@ -96,6 +96,10 @@ header { margin-bottom: 48px; }
 }
 .store-btn-try:hover { opacity: 1; border-color: var(--accent); }
 .store-btn-icon { width: 26px; height: 26px; flex-shrink: 0; color: var(--accent); }
+.store-btn-icon-img { object-fit: contain; }
+.store-btn-firefox { gap: 10px; padding: 0 16px; background: #109ad6; border-color: #109ad6; color: #ffffff; }
+.store-btn-firefox:hover { opacity: 1; border-color: #ffffff; }
+.store-btn-firefox .store-btn-text small { color: rgba(255, 255, 255, 0.8); }
 .store-btn-text {
   display: flex;
   flex-direction: column;
@@ -116,7 +120,7 @@ header { margin-bottom: 48px; }
 
 .tagline {
   color: var(--text-muted);
-  font-size: 1.05rem;
+  font-size: 1rem;
   margin-top: 4px;
 }
 
