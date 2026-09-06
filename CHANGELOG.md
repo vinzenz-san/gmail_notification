@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 — 2026-09-06
+
+- Fixed duplicate notifications for the same mail: `init()` was called both directly on script load and via the `onStartup` listener, so a browser start could run two overlapping `poll()` cycles that each read the same stale `seenIds` and both fired a notification. `poll()` is now guarded so only one call runs at a time.
+
 ## 0.1.0 — 2026-08-31
 
 Initial version. Watches one or more logged-in Google accounts via Gmail's per-account Atom feed (`mail.google.com/mail/u/<n>/feed/atom/`, authenticated with the browser's own session cookies — no OAuth) and notifies on new mail.

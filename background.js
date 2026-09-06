@@ -138,7 +138,20 @@ async function updateBadge(totalUnread, settings) {
 
 // ── Polling ──────────────────────────────────────────────────────────────────────────────────
 
+let pollInFlight = null;
+
+// poll() liest seenIds am Anfang und schreibt sie erst am Ende zurück. Läuft poll() doppelt
+// (z. B. Alarm + manuelles "force-poll" gleichzeitig), sehen beide Läufe denselben alten Stand
+// und melden dieselbe neue Mail zweimal - daher hier auf einen einzigen laufenden Aufruf lock en.
 async function poll() {
+  if (pollInFlight) return pollInFlight;
+  pollInFlight = doPoll().finally(() => {
+    pollInFlight = null;
+  });
+  return pollInFlight;
+}
+
+async function doPoll() {
   const { monitoredAccounts = [], seenIds = {}, cachedFeeds = {}, ...settings } = await browser.storage.local.get({
     monitoredAccounts: [],
     seenIds: {},
@@ -252,6 +265,8 @@ browser.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === POLL_ALARM) poll();
 });
 
+// Kein zusätzlicher direkter init()-Aufruf hier: beim Browserstart feuert onStartup UND das
+// Script würde sonst zusätzlich beim Laden init() ausführen - zwei parallele poll()-Läufe, die
+// dieselbe neue Mail beide als "neu" erkennen (siehe Lock in poll()) und doppelt benachrichtigen.
 browser.runtime.onInstalled.addListener(init);
 browser.runtime.onStartup.addListener(init);
-init();
