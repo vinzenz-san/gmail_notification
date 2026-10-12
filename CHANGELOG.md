@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2 — 2026-10-12
+
+- New icon: red envelope with a thin white flap (Lucide "mail" geometry) on a white frame of equal width on all sides.
+- Popup: only the mail list scrolls; the header and the "Support this project" link stay visible.
+
 ## 0.1.1 — 2026-09-06
 
 - Fixed duplicate notifications for the same mail: `init()` was called both directly on script load and via the `onStartup` listener, so a browser start could run two overlapping `poll()` cycles that each read the same stale `seenIds` and both fired a notification. `poll()` is now guarded so only one call runs at a time.
