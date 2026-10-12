@@ -9,6 +9,17 @@
       body {
         width: 320px;
         max-height: 480px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      header,
+      a.support-link {
+        flex: 0 0 auto;
+      }
+      #scroll-area {
+        flex: 1 1 auto;
+        min-height: 0;
         overflow-y: auto;
       }
       header {
@@ -120,8 +131,10 @@
       <h1 data-i18n="popupTitle"></h1>
       <button id="settings-btn" class="icon-btn" title="Settings" data-i18n-title="popupSettings">⚙</button>
     </header>
-    <div id="accounts"></div>
-    <div id="empty" hidden></div>
+    <div id="scroll-area">
+      <div id="accounts"></div>
+      <div id="empty" hidden></div>
+    </div>
     <a
       class="support-link"
       data-i18n="supportLink"

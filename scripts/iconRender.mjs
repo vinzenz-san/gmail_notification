@@ -1,4 +1,4 @@
-// Zeichnet das rot-weiße Briefumschlag-Icon prozedural (kein externes Asset, kein Google-Logo -
+// Zeichnet das rot-weiße Briefumschlag-Icon (Lucide "mail") prozedural (kein externes Asset, kein Google-Logo -
 // siehe Trademark-Hinweis in generate-icons.mjs) und kodiert es als PNG, ohne externe Deps (nur
 // node:zlib). Geteilt zwischen generate-icons.mjs (Extension-Icons) und generate-docs-icons.mjs
 // (Favicon/Logo für die docs/-Landingpage) - dieselbe Zeichnung, nur andere Zielgrößen.
@@ -54,76 +54,74 @@ export function encodePng(width, height, rgba) {
   return Buffer.concat([signature, chunk("IHDR", ihdr), chunk("IDAT", idat), chunk("IEND", Buffer.alloc(0))]);
 }
 
-// Rundrechteck-Test (Ecken als Viertelkreise, Mittelband exakt).
-function insideRoundedSquare(x, y, size, radius) {
-  const inXBand = x >= radius && x <= size - radius;
-  const inYBand = y >= radius && y <= size - radius;
-  if (inXBand || inYBand) return true;
-  const cx = x < radius ? radius : size - radius;
-  const cy = y < radius ? radius : size - radius;
-  const dx = x - cx;
-  const dy = y - cy;
-  return dx * dx + dy * dy <= radius * radius;
-}
+// Lucide "mail" (https://lucide.dev/icons/mail, ISC-Lizenz): 24x24-Raster, Stroke 2, runde Enden.
+//   <rect x="2" y="4" width="20" height="16" rx="2"/>
+//   <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+// Hier als Signed-Distance-Zeichnung nachgebaut: roter Umschlag mit dünner weißer Klappe auf
+// weißem Hintergrund.
+const STROKE_R = 0.5; // halbe Strichstärke (Lucide-Standard: 2 -> hier 1)
 
 function distToSegment(px, py, ax, ay, bx, by) {
   const abx = bx - ax;
   const aby = by - ay;
   const t = Math.max(0, Math.min(1, ((px - ax) * abx + (py - ay) * aby) / (abx * abx + aby * aby)));
-  const projX = ax + t * abx;
-  const projY = ay + t * aby;
-  return Math.hypot(px - projX, py - projY);
+  return Math.hypot(px - (ax + t * abx), py - (ay + t * aby));
 }
 
-// Briefumschlag: breites weißes Rechteck mit abgerundeten Ecken + Klappe (zwei Faltlinien von den
-// oberen Ecken zu einem Punkt knapp unterhalb der Rechteck-Oberkante), Proportionen an bekannte
-// Mail-Icons angelehnt, aber eigenständig gezeichnet.
-function envelopeGeometry(size) {
-  const left = size * 0.14;
-  const right = size * 0.86;
-  const top = size * 0.29;
-  const bottom = size * 0.71;
-  const cornerRadius = size * 0.045;
-  const apexX = (left + right) / 2;
-  const apexY = top + (bottom - top) * 0.42;
-  return { left, right, top, bottom, cornerRadius, apexX, apexY };
+// Klappen-Polylinie: (22,7) -> (13.009,12.727) -> unterer Halbkreis (r≈1) -> (11,12.727) -> (2,7).
+const FLAP = (() => {
+  const pts = [[22, 7], [13.009, 12.727]];
+  const cx = 12.0045;
+  const cy = 12.727;
+  const r = 1.0045;
+  for (let i = 1; i < 12; i++) {
+    const a = (i / 12) * Math.PI; // 0 = rechts, π = links, über die Unterseite
+    pts.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]);
+  }
+  pts.push([11, 12.727], [2, 7]);
+  return pts;
+})();
+
+// Vorzeichenbehaftete Distanz zum Rundrechteck (x 2..22, y 4..20, rx 2); negativ = innen.
+function rectSdf(x, y) {
+  const qx = Math.abs(x - 12) - (10 - 2);
+  const qy = Math.abs(y - 12) - (8 - 2);
+  return Math.hypot(Math.max(qx, 0), Math.max(qy, 0)) + Math.min(Math.max(qx, qy), 0) - 2;
 }
 
-function insideEnvelope(x, y, geo) {
-  const { left, right, top, bottom, cornerRadius: r } = geo;
-  const w = right - left;
-  const h = bottom - top;
-  const lx = x - left;
-  const ly = y - top;
-  if (lx < 0 || lx > w || ly < 0 || ly > h) return false;
-  const inXBand = lx >= r && lx <= w - r;
-  const inYBand = ly >= r && ly <= h - r;
-  if (inXBand || inYBand) return true;
-  const cx = lx < r ? r : w - r;
-  const cy = ly < r ? r : h - r;
-  const dx = lx - cx;
-  const dy = ly - cy;
-  return dx * dx + dy * dy <= r * r;
+// Weißer Rahmen überall gleich breit (RAND): Umschlag mittig, Rahmen = Umschlag + RAND je Seite.
+// Der Umschlag ist 5:4, das Icon quadratisch - deshalb ist die weiße Fläche selbst nicht quadratisch,
+// oben/unten bleibt transparent.
+const ENV_W = 0.8;
+const ENV_H = ENV_W * 0.8; // Lucide-Rect: 20 x 16
+const RAND = 0.1;
+const ENV_LEFT = RAND;
+const ENV_TOP = (1 - ENV_H) / 2;
+const FRAME_TOP = ENV_TOP - RAND;
+const FRAME_BOTTOM = ENV_TOP + ENV_H + RAND;
+const FRAME_RADIUS = 0.15;
+
+function insideFrame(u, v) {
+  if (v < FRAME_TOP || v > FRAME_BOTTOM) return false;
+  const cy = (FRAME_TOP + FRAME_BOTTOM) / 2;
+  const dx = Math.max(Math.abs(u - 0.5) - (0.5 - FRAME_RADIUS), 0);
+  const dy = Math.max(Math.abs(v - cy) - ((FRAME_BOTTOM - FRAME_TOP) / 2 - FRAME_RADIUS), 0);
+  return dx * dx + dy * dy <= FRAME_RADIUS * FRAME_RADIUS;
 }
 
-function onFlapLine(x, y, geo, thickness) {
-  const { left, right, top, apexX, apexY } = geo;
-  return (
-    distToSegment(x, y, left, top, apexX, apexY) < thickness ||
-    distToSegment(x, y, right, top, apexX, apexY) < thickness
-  );
-}
-
-function pixelColor(x, y, size, geo, flapThickness) {
-  if (!insideRoundedSquare(x, y, size, size * 0.22)) return null; // außerhalb des Icons: transparent
-  if (insideEnvelope(x, y, geo) && !onFlapLine(x, y, geo, flapThickness)) return FG;
+function pixelColor(u, v) {
+  if (!insideFrame(u, v)) return null; // außerhalb: transparent
+  const lx = 2 + ((u - ENV_LEFT) / ENV_W) * 20;
+  const ly = 4 + ((v - ENV_TOP) / ENV_W) * 20;
+  if (rectSdf(lx, ly) > 0) return FG;
+  for (let i = 0; i < FLAP.length - 1; i++) {
+    if (distToSegment(lx, ly, FLAP[i][0], FLAP[i][1], FLAP[i + 1][0], FLAP[i + 1][1]) <= STROKE_R) return FG;
+  }
   return BG;
 }
 
 export function renderIcon(size) {
   const SS = 4; // 4x-Supersampling für weiche Kanten
-  const geo = envelopeGeometry(size);
-  const flapThickness = Math.max(size * 0.045, 0.9);
   const rgba = Buffer.alloc(size * size * 4);
 
   for (let y = 0; y < size; y++) {
@@ -134,9 +132,7 @@ export function renderIcon(size) {
         a = 0;
       for (let sy = 0; sy < SS; sy++) {
         for (let sx = 0; sx < SS; sx++) {
-          const px = x + (sx + 0.5) / SS;
-          const py = y + (sy + 0.5) / SS;
-          const color = pixelColor(px, py, size, geo, flapThickness);
+          const color = pixelColor((x + (sx + 0.5) / SS) / size, (y + (sy + 0.5) / SS) / size);
           if (color) {
             r += color[0];
             g += color[1];
