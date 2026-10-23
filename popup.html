@@ -79,7 +79,14 @@
         margin: 0;
         padding: 0;
       }
+      .account li {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
       .account li a {
+        flex: 1 1 auto;
+        min-width: 0;
         display: flex;
         flex-direction: column;
         gap: 1px;
@@ -90,6 +97,21 @@
         color: var(--text);
       }
       .account li a:hover {
+        background: var(--hover-bg);
+      }
+      button.copy-code {
+        flex: 0 0 auto;
+        font: inherit;
+        font-size: 12px;
+        font-variant-numeric: tabular-nums;
+        padding: 4px 8px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: var(--control-bg);
+        color: var(--text);
+        cursor: pointer;
+      }
+      button.copy-code:hover {
         background: var(--hover-bg);
       }
       .from {
@@ -142,6 +164,7 @@
       target="_blank"
       rel="noopener noreferrer"
     ></a>
+    <script src="gmailFeed.js"></script>
     <script src="popup.js"></script>
   </body>
 </html>

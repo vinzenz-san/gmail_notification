@@ -48,6 +48,34 @@ function parseGmailAtomEntries(xml) {
   }));
 }
 
+// Login-/Verifizierungscode aus Betreff + Feed-Snippet (der Feed liefert nur ein kurzes Summary,
+// nie den Mail-Body). Bewusst konservativ: ohne Schlüsselwort wie "code"/"PIN"/"OTP" wird nichts
+// erkannt, sonst würden Bestell-, Paket- und Postleitzahlen als Code durchgehen.
+const CODE_KEYWORD =
+  /(?:code|kode|pin|otp|passcode|passwort|kennwort|token|tan|verification|verifizierung|best[aä]tigung|confirmation|security|sicherheit)/gi;
+// 4–8 Ziffern (optional 3+3 / 4+4 mit Leerzeichen oder Bindestrich) oder 6–8 Zeichen
+// Großbuchstaben/Ziffern mit mind. einer Ziffer und einem Buchstaben.
+const CODE_CANDIDATE = /(?<![\w-])(?:\d{3}[ -]\d{3}|\d{4}[ -]\d{4}|\d{4,8}|(?=[A-Z0-9]*\d)(?=[A-Z0-9]*[A-Z])[A-Z0-9]{6,8})(?![\w-])/g;
+
+function extractVerificationCode(subject, preview) {
+  const text = `${subject} ${preview}`;
+  const keyword = new RegExp(CODE_KEYWORD.source, "i").exec(text);
+  if (!keyword) return null;
+
+  const candidates = [];
+  for (const m of text.matchAll(CODE_CANDIDATE)) {
+    const digitsOnly = m[0].replace(/[ -]/g, "");
+    if (/^(?:19|20)\d{2}$/.test(digitsOnly)) continue; // Jahreszahl
+    candidates.push({ code: digitsOnly, index: m.index });
+  }
+  if (candidates.length === 0) return null;
+
+  // Bevorzugt der erste Kandidat hinter dem Schlüsselwort ("Your code is 123456"), sonst der
+  // erste überhaupt ("123456 is your code").
+  const after = candidates.find((c) => c.index > keyword.index);
+  return (after ?? candidates[0]).code;
+}
+
 // Einstiegspunkt: rohes Feed-XML -> { accountEmail, entries }. Wirft, wenn der Titel nicht wie
 // erwartet aussieht (undokumentiertes Format kann sich ändern) oder das XML kein Feed ist.
 function parseAtomXml(xml) {

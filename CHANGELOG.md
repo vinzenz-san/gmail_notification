@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3 — 2026-10-23
+
+- Optional "Copy" button in the popup for login/verification codes found in an unread mail's subject or preview (Options → Popup, off by default). Local heuristic, no new permissions.
+
 ## 0.1.2 — 2026-10-12
 
 - New icon: red envelope with a thin white flap (Lucide "mail" geometry) on a white frame of equal width on all sides.

@@ -100,8 +100,10 @@ async function loadSettings() {
     notificationsEnabled: true,
     soundEnabled: false,
     badgeEnabled: true,
+    copyCodeEnabled: false,
     theme: "system",
   });
+  document.getElementById("toggle-copy-code").checked = state.copyCodeEnabled;
   document.getElementById("toggle-notifications").checked = state.notificationsEnabled;
   document.getElementById("toggle-sound").checked = state.soundEnabled;
   document.getElementById("toggle-badge").checked = state.badgeEnabled;
@@ -128,6 +130,7 @@ for (const [id, key] of [
   ["toggle-notifications", "notificationsEnabled"],
   ["toggle-sound", "soundEnabled"],
   ["toggle-badge", "badgeEnabled"],
+  ["toggle-copy-code", "copyCodeEnabled"],
 ]) {
   document.getElementById(id).addEventListener("change", (e) => {
     browser.storage.local.set({ [key]: e.target.checked });

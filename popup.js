@@ -16,7 +16,27 @@ function truncate(str, max) {
 const accountsEl = document.getElementById("accounts");
 const emptyEl = document.getElementById("empty");
 
-function renderAccounts(monitoredAccounts, cachedFeeds) {
+function makeCopyButton(code) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "copy-code";
+  btn.textContent = browser.i18n.getMessage("popupCopyCode", [code]);
+  btn.title = browser.i18n.getMessage("popupCopyCodeTitle");
+  btn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      btn.textContent = browser.i18n.getMessage("popupCopied");
+    } catch {
+      btn.textContent = browser.i18n.getMessage("popupCopyFailed");
+    }
+    setTimeout(() => {
+      btn.textContent = browser.i18n.getMessage("popupCopyCode", [code]);
+    }, 1500);
+  });
+  return btn;
+}
+
+function renderAccounts(monitoredAccounts, cachedFeeds, copyCodeEnabled) {
   accountsEl.innerHTML = "";
 
   if (monitoredAccounts.length === 0) {
@@ -64,6 +84,8 @@ function renderAccounts(monitoredAccounts, cachedFeeds) {
 
         link.append(from, subject);
         item.appendChild(link);
+        const code = copyCodeEnabled ? extractVerificationCode(entry.subject, entry.preview) : null;
+        if (code) item.appendChild(makeCopyButton(code));
         list.appendChild(item);
       }
       section.appendChild(list);
@@ -74,18 +96,18 @@ function renderAccounts(monitoredAccounts, cachedFeeds) {
 }
 
 async function readState() {
-  return browser.storage.local.get({ monitoredAccounts: [], cachedFeeds: {} });
+  return browser.storage.local.get({ monitoredAccounts: [], cachedFeeds: {}, copyCodeEnabled: false });
 }
 
 async function load() {
   applyI18n();
-  const { monitoredAccounts, cachedFeeds } = await readState();
-  renderAccounts(monitoredAccounts, cachedFeeds);
+  const { monitoredAccounts, cachedFeeds, copyCodeEnabled } = await readState();
+  renderAccounts(monitoredAccounts, cachedFeeds, copyCodeEnabled);
 
   try {
     await browser.runtime.sendMessage({ type: "force-poll" });
     const fresh = await readState();
-    renderAccounts(fresh.monitoredAccounts, fresh.cachedFeeds);
+    renderAccounts(fresh.monitoredAccounts, fresh.cachedFeeds, fresh.copyCodeEnabled);
   } catch {
     // Hintergrundskript nicht erreichbar (z. B. gerade neu gestartet) - gecachte Ansicht bleibt stehen.
   }

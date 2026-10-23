@@ -9,6 +9,7 @@ Browser extension (Firefox & Chrome) that watches one or more logged-in Google a
 - **Notification and/or sound** for new mail, each independently toggleable (sound off by default).
 - **Unread count badge** on the toolbar icon, toggleable.
 - **Checked every 2 minutes** via a single background poll, regardless of how many browser windows are open — no duplicate sounds/notifications.
+- **Copy login codes (optional, off by default)** — when an unread mail's subject or preview contains a verification code (Twitch, GitHub, DHL, …), the popup shows a button to copy it to the clipboard. Detection runs locally on the Atom feed's short preview text.
 - **Light/dark/system theme.**
 
 No OAuth, no Google Cloud project, no password entry: it reads Gmail's per-account Atom feed (`mail.google.com/mail/u/<n>/feed/atom`) using your browser's existing session cookies — the same mechanism Gmail's own "unread count" bookmarklets have used for years. No account credentials are ever seen by the extension.
